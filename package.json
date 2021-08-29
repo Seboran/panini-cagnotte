@@ -12,5 +12,8 @@
   },
   "nodemonConfig": {
     "ext": "js,sol"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.3.1"
   }
 }
