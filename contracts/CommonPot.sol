@@ -5,8 +5,14 @@ contract CommonPot {
 
   mapping(address => bool) public ownerMapping;
 
+  event OwnerChange(
+    address indexed _owner,
+    bool _isOwner
+  );
+
   constructor(address firstOwner) {
     ownerMapping[firstOwner] = true;
+    emit OwnerChange(firstOwner, true);
   }
 
   modifier restricted {
@@ -16,5 +22,15 @@ contract CommonPot {
 
   function isOwner(address person) public view returns (bool) {
     return this.ownerMapping(person);
+  }
+
+  function addOwner(address person) public restricted {
+    ownerMapping[person] = true;
+    emit OwnerChange(person, true);
+  }
+
+  function removeOwner(address person) public restricted {
+    ownerMapping[person] = false;
+    emit OwnerChange(person, false);
   }
 }
