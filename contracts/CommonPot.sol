@@ -36,18 +36,21 @@ contract CommonPot {
     emit PotTransfer(msg.sender, msg.value, address(this).balance);
   }
 
-  function withdraw(uint _amount, address payable _address) external restricted {
+  function _withdraw(uint _amount, address payable _address) private restricted {
     _address.transfer(_amount);
     emit PotWithdraw(msg.sender, _amount, address(this).balance);
-
   }
 
-  function withdraw(uint _amount) external restricted {
-    this.withdraw(_amount, payable(msg.sender));
+  function withdraw(uint _amount, address payable _address) external {
+    _withdraw(_amount, _address);
+  }
+
+  function withdraw(uint _amount) external {
+    _withdraw(_amount, payable(msg.sender));
   }
 
   function isOwner(address person) public view returns (bool) {
-    return this.ownerMapping(person);
+    return ownerMapping[person];
   }
 
   function addOwner(address person) public restricted {

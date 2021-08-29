@@ -16,13 +16,28 @@ contract('TestCommonPot', (accounts) => {
     contract('Add new owner', () => {
       it('should add new owner', async () => {
         const instance = await TestCommonPot.deployed()
-        const response = await instance.addOwner(accounts[1], {
+        await instance.addOwner(accounts[1], {
           from: accounts[0],
         })
         const isOwner = await instance.isOwner.call(accounts[1], {
           from: accounts[0],
         })
         assert.isTrue(isOwner, 'second address should be an owner')
+      })
+    })
+    contract('Get right to add new owner', () => {
+      it('should allow to add a new owner', async () => {
+        const instance = await TestCommonPot.deployed()
+        await instance.addOwner(accounts[1], {
+          from: accounts[0],
+        })
+        await instance.addOwner(accounts[2], {
+          from: accounts[1],
+        })
+        const isOwner = await instance.isOwner.call(accounts[2], {
+          from: accounts[0],
+        })
+        assert.isTrue(isOwner, 'third address should be an owner')
       })
     })
 
@@ -79,6 +94,10 @@ contract('TestCommonPot', (accounts) => {
         instance.addOwner(accounts[1], { from: accounts[1] }),
         truffleAssert.ErrorType.REVERT,
       )
+      const isOwner = await instance.isOwner.call(accounts[1], {
+        from: accounts[0],
+      })
+      assert.isFalse(isOwner, 'Rejected account should not be owner')
     })
   })
 
@@ -89,13 +108,17 @@ contract('TestCommonPot', (accounts) => {
         instance.removeOwner(accounts[0], { from: accounts[1] }),
         truffleAssert.ErrorType.REVERT,
       )
+      const isOwner = await instance.isOwner.call(accounts[0], {
+        from: accounts[0],
+      })
+      assert.isTrue(isOwner, 'First address should still has ownership')
     })
   })
 
   contract('Payment', (accounts) => {
     it('should accept payments and fire events', async () => {
       const instance = await TestCommonPot.deployed()
-      const gweiToSend = 10
+      const gweiToSend = 100000000000
       const response = await instance.send(gweiToSend, {
         from: accounts[0],
       })
@@ -136,21 +159,24 @@ contract('TestCommonPot', (accounts) => {
   contract('Withdrawal', (accounts) => {
     it('should allow withdrawals', async () => {
       const instance = await TestCommonPot.deployed()
-      const gweiToSend = 10
+      const gweiToSend = "1000000000000000000"
+      const account1Balance = await web3.eth.getBalance(accounts[1])
       await instance.send(gweiToSend, {
         from: accounts[0],
       })
 
       await instance.addOwner(accounts[1], { from: accounts[0] })
 
-      const gweiToWithdraw = 5
+      const gweiToWithdraw = "100000000000000000"
 
       const response = await instance.methods['withdraw(uint256)'](
         gweiToWithdraw,
         {
           from: accounts[1],
+          gasPrice: 0,
         },
       )
+
 
       // Check event
       const { event, args } = response.logs[0]
@@ -159,6 +185,17 @@ contract('TestCommonPot', (accounts) => {
       assert.equal(_receiver, accounts[1], 'Invalid sender')
       assert.equal(_amount, gweiToWithdraw, 'Invalid gwei amount')
       assert.equal(_total, gweiToSend - gweiToWithdraw, 'Invalid total')
+
+      // Check balance
+      const newAccount1Balance = await web3.eth.getBalance(accounts[1])
+      console.log('previous', account1Balance)
+      console.log('next', newAccount1Balance, typeof Number(newAccount1Balance))
+      console.log("difference", newAccount1Balance - account1Balance)
+      assert.equal(
+        BigInt(newAccount1Balance) - BigInt(account1Balance),
+        BigInt(gweiToWithdraw),
+        'Not valid amount',
+      )
     })
   })
 })
