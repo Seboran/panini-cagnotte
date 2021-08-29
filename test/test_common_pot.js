@@ -159,7 +159,7 @@ contract('TestCommonPot', (accounts) => {
   contract('Withdrawal', (accounts) => {
     it('should allow withdrawals', async () => {
       const instance = await TestCommonPot.deployed()
-      const gweiToSend = "1000000000000000000"
+      const gweiToSend = '1000000000000000000'
       const account1Balance = await web3.eth.getBalance(accounts[1])
       await instance.send(gweiToSend, {
         from: accounts[0],
@@ -167,7 +167,7 @@ contract('TestCommonPot', (accounts) => {
 
       await instance.addOwner(accounts[1], { from: accounts[0] })
 
-      const gweiToWithdraw = "100000000000000000"
+      const gweiToWithdraw = '100000000000000000'
 
       const response = await instance.methods['withdraw(uint256)'](
         gweiToWithdraw,
@@ -176,7 +176,6 @@ contract('TestCommonPot', (accounts) => {
           gasPrice: 0,
         },
       )
-
 
       // Check event
       const { event, args } = response.logs[0]
@@ -188,9 +187,7 @@ contract('TestCommonPot', (accounts) => {
 
       // Check balance
       const newAccount1Balance = await web3.eth.getBalance(accounts[1])
-      console.log('previous', account1Balance)
-      console.log('next', newAccount1Balance, typeof Number(newAccount1Balance))
-      console.log("difference", newAccount1Balance - account1Balance)
+
       assert.equal(
         BigInt(newAccount1Balance) - BigInt(account1Balance),
         BigInt(gweiToWithdraw),
