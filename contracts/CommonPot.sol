@@ -10,6 +10,18 @@ contract CommonPot {
     bool _isOwner
   );
 
+  event PotTransfer(
+    address indexed _sender,
+    uint _amount,
+    uint _total
+  );
+
+  event PotWithdraw(
+    address indexed _receiver,
+    uint _amount,
+    uint _total
+  );
+
   constructor(address firstOwner) {
     ownerMapping[firstOwner] = true;
     emit OwnerChange(firstOwner, true);
@@ -18,6 +30,20 @@ contract CommonPot {
   modifier restricted {
     require(ownerMapping[msg.sender], "Only an owner can call this function");
     _;
+  }
+
+  receive() external payable {
+    emit PotTransfer(msg.sender, msg.value, address(this).balance);
+  }
+
+  function withdraw(uint _amount, address payable _address) external restricted {
+    _address.transfer(_amount);
+    emit PotWithdraw(msg.sender, _amount, address(this).balance);
+
+  }
+
+  function withdraw(uint _amount) external restricted {
+    this.withdraw(_amount, payable(msg.sender));
   }
 
   function isOwner(address person) public view returns (bool) {
