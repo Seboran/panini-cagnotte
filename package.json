@@ -1,0 +1,16 @@
+{
+  "name": "panini-cagnotte",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "truffle test",
+    "test:dev": "nodemon --exec truffle test"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  },
+  "nodemonConfig": {
+    "ext": "js,sol"
+  }
+}
