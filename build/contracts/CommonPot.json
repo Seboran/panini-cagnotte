@@ -7482,14 +7482,84 @@
   },
   "networks": {
     "5777": {
-      "events": {},
+      "events": {
+        "0x978ce0ed973ab16db6f3686fdbbf4a2a4a341ecd048ffff4f64a939d8efdfba2": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "_owner",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "bool",
+              "name": "_isOwner",
+              "type": "bool"
+            }
+          ],
+          "name": "OwnerChange",
+          "type": "event"
+        },
+        "0x083ef5850d2d9790d748bdf73917606d096e3476684774f6d13ee15b43633702": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "_sender",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_total",
+              "type": "uint256"
+            }
+          ],
+          "name": "PotTransfer",
+          "type": "event"
+        },
+        "0xece6bdff0076393603f08647b76d5e80b8af1574b62162111815f4d5989d88cc": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "_receiver",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_total",
+              "type": "uint256"
+            }
+          ],
+          "name": "PotWithdraw",
+          "type": "event"
+        }
+      },
       "links": {},
-      "address": "0xb4DFdc50B7c2033c43d8fDC0fD2D356AB0339219",
-      "transactionHash": "0xc51f0ba3a6202e1b6830caa27feaadb591fc0213ff9fb1ef6acaa43573dc213b"
+      "address": "0x672dB34D8696c571c5d9223438bE82A39C1e1afd",
+      "transactionHash": "0x884882454e57ae59a5868812fcaccb619d58cb9e9c48ae0132f9d314ed0efbe4"
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-08-29T16:22:31.573Z",
+  "updatedAt": "2021-08-29T17:42:56.604Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
