@@ -1,11 +1,15 @@
 <template>
   <div class="container">
     <main>
-      <h1>Common pot</h1>
-      <div>Total common pot balance: {{ commonPotTotalEther }} ETH</div>
+      <div class="row g-2">
+        <h1 class="col-md-6">Common pot</h1>
+        <h2 class="col-md-6">
+          Total: {{ commonPotTotalEther }} ETH
+        </h2>
+      </div>
       <div class="row g-5">
-        <div class="col-md-5 col-lg-4"><Members :members="addresses" /></div>
-        <div class="col-md-7 col-lg-8"><Actions /></div>
+        <div class="col-md-9"><Members :members="addresses" /></div>
+        <div class="col-md-3"><Actions /></div>
       </div>
     </main>
   </div>
@@ -46,7 +50,10 @@ export default {
   methods: {
     updateAddresses: async function () {
       // Should retrieve all OwnerChange events and check who's still owner
-      this.addresses = ["test"];
+      this.addresses = [
+        "0x217A149bF04D19d5e347d945BB45d915F6cFB6d7",
+        "0x4FD7E7D40c67C27bD11d886590a65cE6218d0aFF",
+      ];
     },
     updateCommonPotTotalEther: async function () {
       this.commonPotTotalEther = web3.utils.fromWei(

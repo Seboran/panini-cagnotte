@@ -1,6 +1,10 @@
 <template>
-  <h2>Addresses</h2>
-  <div v-for="address in members" class="col themed-grid-col" :key="address">
+  <h3>Addresses</h3>
+  <div
+    v-for="address in members"
+    class="list-group-item d-flex justify-content-between"
+    :key="address"
+  >
     {{ address }}
   </div>
 </template>
